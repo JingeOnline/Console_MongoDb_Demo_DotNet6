@@ -1,6 +1,9 @@
 ﻿using MongoDB.Driver;
 using Simple_Demo;
 
+//视频教程：https://www.youtube.com/watch?v=exXavNOqaVo&t=1907s&pp=ygUKQyMgTW9uZ29kYg%3D%3D
+//视频教程：https://www.youtube.com/watch?v=iWTdJ1IYGtg&ab_channel=kudvenkat
+
 namespace ConsoleCore6_MongoDb_Demo
 {
     internal class Program

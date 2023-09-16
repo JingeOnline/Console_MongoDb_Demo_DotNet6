@@ -9,7 +9,11 @@ namespace Simple_Demo
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; }  //注意Id的数据类型为string。
+
+        //对数据库中的属性字段进行Mapping。
+        [BsonElement("FirstName")]
         public string FirstName { get; set; }
+        [BsonElement("LastName")]
         public string LastName { get; set; }
     }
 }

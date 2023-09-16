@@ -47,15 +47,16 @@ namespace CRUD_Demo
         {
             var studentCollection = ConnectTomongo<StudentModel>(collectionStudent);
             var result = await studentCollection.FindAsync( s=> s.Id==id);
-            var studentList=result.ToList();
-            if(studentList.Count>0)
-            {
-                return studentList[0];
-            }
-            else
-            {
-                return null;
-            }
+            return result.FirstOrDefault();
+            //var studentList=result.ToList();
+            //if(studentList.Count>0)
+            //{
+            //    return studentList[0];
+            //}
+            //else
+            //{
+            //    return null;
+            //}
         }
 
         /// <summary>
@@ -73,15 +74,17 @@ namespace CRUD_Demo
         {
             var choreCollection = ConnectTomongo<ChoreModel>(collectionChore);
             var result=await choreCollection.FindAsync(c=>c.Id==id);
-            var choreList=result.ToList();
-            if(choreList.Count>0)
-            {
-                return choreList[0];
-            }
-            else
-            {
-                return null;
-            }
+
+            return result.FirstOrDefault();
+            //var choreList=result.ToList();
+            //if(choreList.Count>0)
+            //{
+            //    return choreList[0];
+            //}
+            //else
+            //{
+            //    return null;
+            //}
         }
 
         /// <summary>
@@ -127,10 +130,15 @@ namespace CRUD_Demo
         internal async Task UpdateChore(ChoreModel chore)
         {
             var choresCollection=ConnectTomongo<ChoreModel>(collectionChore);
+            
+            //独立定义一个FilterDefinition对象。
             var filter = Builders<ChoreModel>.Filter.Eq("Id",chore.Id);
             //如果存在则更新，如果不存在则创建。
             ReplaceOptions options = new ReplaceOptions() {IsUpsert=true };
             await choresCollection.ReplaceOneAsync(filter, chore, options);
+
+            //另一种直接使用lamda表达式的方法定义filter，更常用。与上面的语句是等效的。
+            //await choresCollection.ReplaceOneAsync(c=>c.Id==chore.Id,chore,options);
         }
 
         /// <summary>
@@ -147,7 +155,7 @@ namespace CRUD_Demo
         internal async Task CreateChoreHistory(ChoreModel chore,string updateBy)
         {
             var historyCollection = ConnectTomongo<ChoreHistoryModel>(collectionChoreHistory);
-            await historyCollection.InsertOneAsync(new ChoreHistoryModel(chore,updateBy));
+            historyCollection.InsertOneAsync(new ChoreHistoryModel(chore,updateBy));
         }
     }
 }
