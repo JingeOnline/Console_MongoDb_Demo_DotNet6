@@ -10,10 +10,11 @@ namespace CRUD_Demo
         {
             db = new ChoreDataAccess();
 
-            //await createStudent(db);
+            //await createStudent();
             //Console.WriteLine((await db.GetStudentById("650422cc2d681e97f304ef41")).FullName);
             //await creatChore();
-            await updateChore();
+            //await updateChore();
+            await updateStudent();
 
             Console.WriteLine("Done");
         }
@@ -48,6 +49,13 @@ namespace CRUD_Demo
             await db.UpdateChore(chore);
 
             await db.CreateChoreHistory(chore, "Yar Bora");
+        }
+
+        static async Task updateStudent()
+        {
+            StudentModel student = await db.GetStudentById("650422cc2d681e97f304ef41");
+            student.FirstName = "Timmy";
+            await db.UpdateStudent(student);
         }
     }
 }

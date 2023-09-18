@@ -111,6 +111,23 @@ namespace CRUD_Demo
         }
 
         /// <summary>
+        /// 更新学生信息，这里使用了Update而不是Replace。
+        /// </summary>
+        /// <param name="student"></param>
+        /// <returns></returns>
+        internal async Task UpdateStudent(StudentModel student)
+        {
+            var studentCollection = ConnectTomongo<StudentModel>(collectionStudent);
+            //Eq表示相等，Gt表示大于，Lt表示小于
+            var filterDefinition = Builders<StudentModel>.Filter.Eq(x => x.Id, student.Id);
+            var updateDefinition = Builders<StudentModel>.Update
+                .Set(x => x.FirstName, student.FirstName)  //set方法，第一个参数是要更新的字段，第二个参数是要更新的值
+                .Set(x=>x.LastName,student.LastName);
+            //没有添加options，则如果更新对象不存在，则不进行任何操作。
+            await studentCollection.UpdateOneAsync(filterDefinition, updateDefinition);
+        }
+
+        /// <summary>
         /// 添加一个值日活动
         /// </summary>
         /// <param name="chore"></param>
@@ -149,6 +166,7 @@ namespace CRUD_Demo
         internal async Task DeleteChore(ChoreModel chore)
         {
             var choresCollection = ConnectTomongo<ChoreModel>(collectionChore);
+            //DeleteOne方法只会删除匹配到的第一个对象，DeleteMany方法会删除匹配到的所有对象。
             await choresCollection.DeleteOneAsync(c=>c.Id==chore.Id);
         }
 
